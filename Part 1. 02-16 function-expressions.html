@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log"></div>
+<script>
+let elmLog = document.getElementById("log");
+
+//Callback function
+function ask(question, yes, no){
+	if(confirm(question)) yes()
+	else no();
+}
+
+let str;
+
+/*
+function showOK(){
+	str = "You confirmed.";
+}
+
+function showCancel(){
+	str = "You clicked cancel.";
+}
+
+//Function Expression
+ask("Do you confirm?", showOK, showCancel);
+*/
+
+//Function Expression
+ask(
+	"Do you confirm?",
+	function() {str = "You confirmed.";}, //anonymous function
+	function() {str = "You clicked cancel.";} //anonymous function
+);
+
+elmLog.innerHTML += `${str}<br>`;
+
+</script>
+
+</body>
+</html>

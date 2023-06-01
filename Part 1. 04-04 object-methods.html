@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<button onclick='user.sayHi();'>user.sayHi();</button>
+<div id="log"></div>
+<script>
+let elmLog = document.getElementById("log");
+
+let user = {
+	name: "Mike",
+	age: 22,
+	//sayHi: function(){ 와 동일(?)
+	sayHi(){
+		elmLog.innerHTML += `Hello!! I am ${this.name}!!<br>`;
+	}
+}
+
+/*
+객체는 아래와 같이 method를 추가할 수 있다. 함수 형태의 method도 가능하다.
+
+user.sayHi = function() {
+	elmLog.innerHTML += `Hello!!<br>`;
+}
+*/
+
+//Javascript에서 this는 컨텍스트에 따라 달라진다...
+let user1 = {name: "John"};
+let admin = {name: "Admin"};
+
+function getName(){
+	return this.name;
+}
+
+//별개의 객체에서 동일한 함수를 사용하도록 method를 재사용할 수 있다..
+user1.getNf = getName;
+admin.getNf = getName;
+
+elmLog.innerHTML += `${user1.getNf()}!!<br>`;
+elmLog.innerHTML += `${admin.getNf()}!!<br>`;
+elmLog.innerHTML += `${admin['getNf']}<br>`; //코드가 출력된다..
+elmLog.innerHTML += `${admin['getNf']()}!!<br>`;
+
+//cf. 화살표 함수는 일반 함수와는 달리 고유한 this를 가지지 않는다. 
+
+</script>
+</body>
+</html>

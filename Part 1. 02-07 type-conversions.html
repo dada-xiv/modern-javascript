@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log"></div>
+<script>
+let elmLog = document.getElementById("log");
+
+let value = true;
+
+elmLog.innerHTML += `${typeof value}<br>`;
+
+value = String(value)
+
+elmLog.innerHTML += `${typeof value}<br>`;
+
+elmLog.innerHTML += `${Number(true)}<br>`;
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+let [firstName, surname] = "John Smith".split(' ');
+print(firstName); // John
+print(surname);  // Smith
+
+// second element is not needed
+let [, ,title] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+print(title); // Consul
+
+let user = {};
+[user.name, user.surname] = "John Smith".split(' ');
+print(user.name);
+print(user.surname);
+
+user = new Map();
+user.set("name", "John");
+user.set("age", "30");
+user.set("sex", "Male");
+
+
+for(let [key, val] of user){
+	print(`${key}: ${val}`);
+}
+
+{
+let [name1, name2, ... titles] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+// now titles = ["Consul", "of the Roman Republic"]
+
+print(name1);
+print(titles);
+}
+</script>
+</body>
+</html>

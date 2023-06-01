@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log"></div>
+<script>
+function resetForm(obj){
+	document.getElementById(obj).reset();
+}
+function printLog(id, str){
+	let elmId = document.getElementById(id);
+	elmId.tagName === "DIV" ? elmId.innerHTML+=`${str}<br>` : elmId.value=str;
+}
+
+
+//Symbol은 원시형 데이터로, 유일무이한 식별자를 만드는 데 사용된다.
+//심볼은 이름이 같더라도 값이 항상 다르다. 
+let sid = Symbol("userid");
+
+//객체 리터럴에서는 대괄호를 사용해 심볼형 키를 만들 수 있다.
+let user1 = {
+	name: "Allan",
+	age: 88,
+	sex: "male",
+	[sid]: 120
+};
+
+for(let key in user1){
+	printLog("log", user1[key]);
+}
+
+
+let user2 = Object.assign({}, user1); //심볼을 포함하여 통째로 복사
+printLog("log", user2[sid]); //120이 찍힌다
+
+
+</script>
+</body>
+</html>

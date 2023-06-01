@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+/*
+For plain objects, the following methods are available:
+
+Object.keys(obj) returns an array of keys.
+Object.values(obj) returns an array of values.
+Object.entries(obj) returns an array of [key, value] pairs.
+*/
+
+/*
+Task 1. Sum the properties
+*/
+
+let salaries = {
+  "John": 100,
+  "Pete": 300,
+  "Mary": 250
+};
+
+
+function sumSalaries(objSal){
+	let sum = 0;
+	for(let val of Object.values(objSal)){
+		sum += val;
+	}
+	return sum;
+}
+
+print(Object.keys(salaries).length) //3
+print(sumSalaries(salaries)); // 650
+
+</script>
+</body>
+</html>

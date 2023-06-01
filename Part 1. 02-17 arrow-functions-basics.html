@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log"></div>
+<script>
+let elmLog = document.getElementById("log");
+
+let sum = (a, b) => a+b;
+
+elmLog.innerHTML += `${sum(1,2)}<br>`;
+
+let double = n => n*2
+
+elmLog.innerHTML += `${double(3)}<br>`;
+
+let sayHi = () => "Hello";
+
+elmLog.innerHTML += `${sayHi()}<br>`;
+
+let age = prompt("Input your age.", 18);
+
+let isAdult = (age>=18) ?
+	() => true :
+	() => false;
+	
+elmLog.innerHTML += `You are ${isAdult(age) ? "an adult" : "a minor"}.<br>`;
+
+function ask(question, yes, no){
+	if(confirm(question)) yes()
+	else no();
+}
+
+let str;
+/*
+//Function Expression
+ask(
+	"Do you confirm?",
+	function() {str = "You confirmed.";},
+	function() {str = "You clicked cancel.";}
+);
+*/
+ask(
+	"Do you confirm?",
+	() => str = "You confirmed.",
+	() => str = "You clicked cancel."
+);
+
+elmLog.innerHTML += `${str}<br>`;
+
+</script>
+
+</body>
+</html>

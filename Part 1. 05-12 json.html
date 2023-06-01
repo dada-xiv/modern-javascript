@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+let now = new Date();
+print(now);
+
+/*
+JSON is a general format to represent values and objects. Initially it was made for JavaScript, but many other languages have libraries to handle it as well.
+
+JavaScript provides methods:
+
+JSON.stringify to convert objects into JSON.
+JSON.parse to convert JSON back into an object.
+*/
+
+let stud1 = {
+  name: 'John',
+  age: 20,
+  isAdmin: false,
+  courses: ['Math 102', 'Physics 203', 'CS 121'],
+};
+
+let json = JSON.stringify(stud1);
+
+print(json);
+
+</script>
+</body>
+</html>

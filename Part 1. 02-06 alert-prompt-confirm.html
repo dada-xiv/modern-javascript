@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log"></div>
+<script>
+let elmLog = document.getElementById("log");
+
+let userName = prompt("What is your name?", '');
+elmLog.innerHTML += `${userName}<br>`;
+
+let isBoss = confirm("Are you my owner?");
+elmLog.innerHTML += `${isBoss}<br>`;
+</script>
+
+</body>
+</html>

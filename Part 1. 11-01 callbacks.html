@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+/*
+Many functions are provided by JavaScript host environments that allow you to schedule asynchronous actions. In other words, actions that we initiate now, but they finish later. For example setTimeout() provides scheduled actions.
+*/
+
+/*
+
+// creates a <script> tag and append it to the page
+// this causes the script with given src to start loading and run when complete
+function loadScript(src) {
+  let script = document.createElement('script');
+  script.src = src;
+  document.head.append(script);
+}
+
+loadScript('/my/script.js'); // the script has "function newFunction() {…}"
+newFunction(); // no such function!
+*/
+
+function loadScript(src, callback) {
+  let script = document.createElement('script');
+  script.src = src;
+  script.onload = () => callback(script);
+  document.head.append(script);
+}
+
+/*
+Now if we want to call new functions from the script, we should write that in the callback. The second argument is a function (usually anonymous) that runs when the action is completed.
+*/
+
+loadScript('https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js', script => {
+  print(`Cool, the script ${script.src} is loaded!!<br>`);
+  print( _ ); // _ is a function declared in the loaded script
+});
+
+
+</script>
+</body>
+</html>

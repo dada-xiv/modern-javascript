@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+</style>
+</head>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+
+<ul>
+  <li>The</li>
+  <li>test</li>
+</ul>
+<ul>
+  <li>has</li>
+  <li>passed</li>
+</ul>
+
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+/*
+The id must be unique. There can be only one element in the document with the given id.
+*/
+
+let elem = document.querySelectorAll('ul > li:last-child');
+for(let item of elem){
+	item.innerHTML += "!";
+	item.style.backgroundColor = "gray";
+}
+
+/*
+print(document.getElementsByTagName('li').length);
+print(document.getElementsByTagName('li')[0].innerHTML);
+*/
+
+let str = '';
+let n = document.getElementsByTagName('li').length;
+
+for(let i=0;i<n;i++){
+	str += ' '+ document.getElementsByTagName('li')[i].innerHTML;
+}
+
+print(str);
+
+/*
+All methods "getElementsBy*" return a live collection. Such collections always reflect the current state of the document and “auto-update” when it changes.
+
+In contrast, querySelectorAll returns a static collection. It’s like a fixed array of elements. 
+*/
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+/*
+setTimeout() allows us to run a function once after the interval of time.
+
+setInterval() allows us to run a function repeatedly, starting after the interval of time, then repeating continuously at that interval.
+*/
+
+function sayHi() {
+	print('Hello');
+}
+
+setTimeout(sayHi, 1000); //1초
+
+function sayHi2(phrase, who) {
+	print(`${phrase}, ${who}.`);
+}
+
+setTimeout(sayHi2, 1000, "Hello", "John"); // Hello, John
+
+// repeat with the interval of 2 seconds
+let timerId = setInterval(() => print('tick'), 500);
+// after 5 seconds stop
+setTimeout(() => { clearInterval(timerId); print('stop'); }, 2500);
+
+
+/*
+Task : Output every second
+*/
+
+function isPrime(num){
+	if(num<=1) return false;
+	if(num===2) return true;
+	if(num%2===0) return false;
+	for(let i=3;i<=Math.sqrt(num);i+=2){
+		if(num%i===0) return false;
+	}
+	return true;
+}
+
+function printPrimesPerSec(begin, end){
+	let arr = [];
+	for(let i=begin;i<=end;i++){
+		if(isPrime(i)==true) arr.push(i);
+	}
+	let idx = 0;
+	let timerId = setInterval(() => {
+		print(arr[idx++]);
+		if(idx===arr.length) clearInterval(timerId);
+	}, 100);	
+}
+
+printPrimesPerSec(2, 20);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log"></div>
+<script>
+let elmLog = document.getElementById("log");
+
+//객체는 참조에 의해(by reference) 저장되고 복사된다.
+
+let user1 = {
+	name: "Kapa",
+	age: 87
+}
+
+let admin = user1;
+
+admin.name = user1.name + 'n';
+
+elmLog.innerHTML += `${admin.name}<br>`;
+elmLog.innerHTML += `${user1.name}<br>`;
+
+let a = {};
+let b = a; //참조에 의한 복사된다
+
+elmLog.innerHTML += `is a==b? ${a==b}<br>`;
+elmLog.innerHTML += `is a===b? ${a===b}<br>`;
+
+
+//기존에 있던 객체와 똑같으면서 독립적인 객체를 만들고 싶다면
+
+let user2 = {}; //새로운 빈 객체
+for(key in user1){
+	user2[key] = user1[key];
+}
+
+/*
+아래와 같이 한 줄로 복사할 수 있다.
+
+let user2 = Object.assign({}, user1); 
+*/
+
+user2.name = user1.name + '(c)';
+
+elmLog.innerHTML += `${user2.name}<br>`;
+
+let permission1 = {canView: true};
+let permission2 = {canEdit: true};
+
+Object.assign(user1, permission1, permission2);
+
+str="";
+for(key in user1){
+	str+=`${key}: ${user1[key]}<br>`;
+}
+
+elmLog.innerHTML += `${str}<br>`;
+
+let user3 = {
+  name: "John",
+  sizes: {
+    height: 182,
+    width: 50
+  }
+};
+
+let user3c = Object.assign({}, user3);
+
+str="";
+for(key in user3){
+	str+=`${key}: ${user3[key]}<br>`;
+}
+elmLog.innerHTML += `${str}<br>`;
+
+user3.sizes.width++;
+elmLog.innerHTML += `${user3.sizes.width}<br>`;
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+/*
+Class basic syntax:
+
+class MyClass {
+  // class methods
+  constructor() { ... }
+  method1() { ... }
+  method2() { ... }
+  method3() { ... }
+  ...
+}
+*/
+
+class User{
+	constructor(name){
+		this.name = name;
+	}
+	
+	sayHi(){
+		print(`Hi, I am ${this.name}.`);
+	}
+}
+
+let usr1 = new User("James");
+usr1.sayHi();
+print(typeof User); //function
+print(typeof usr1); //object
+print(User === User.prototype.constructor); //true
+print(User.prototype); //[object Object]
+print(User.prototype.sayHi); //코드
+print(Object.getOwnPropertyNames(User.prototype)); //constructor,sayHi
+
+/*
+Getters/Setters
+
+Classes may include getters/setters, computed properties etc.
+
+the # and _ prefixes are used to indicate the privacy of class members.
+
+# prefix : The # prefix is used to declare private class members. Private members cannot be accessed from outside of the class, even by other members of the same class. This can be useful for preventing accidental or malicious access to sensitive data.
+
+_ prefix : The _ prefix is used to declare non-public class members. Non-public members can be accessed from outside of the class, but they are not intended to be used by other code. This can be useful for declaring implementation details that are not part of the public API. 
+*/
+
+class UserNormal{
+	static #counter = 0; //static + private
+	
+	constructor(name){
+		this._name = name;
+		UserNormal.#counter++;
+	}
+
+	getCounter(){
+		return UserNormal.#counter;
+	}
+	
+	get name(){
+		return this._name;
+	}	
+		
+	set name(val){
+		if(val.length < 4){
+			print("Name is too short.");
+			return;
+		}
+		this._name = val;
+	}
+}
+
+let user1 = new UserNormal("John");
+print(user1.name);
+print(user1.getCounter());
+
+let user2 = new UserNormal("John2");
+print(user2.getCounter());
+
+user = new UserNormal("J");
+
+print(user1.getCounter());
+print(user2.getCounter());
+
+</script>
+</body>
+</html>

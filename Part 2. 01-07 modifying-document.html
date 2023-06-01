@@ -1,0 +1,329 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+table{border-collapse: collapse;}
+td,th{border:1px solid black;width:2em;text-align:center;}
+th{font-weight:bold;background-color:#E6E6E6;}
+</style>
+</head>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+</script>
+
+<h3>Sort the table</h3>
+<div id="logSortTable"></div>
+<table id="table">
+<thead>
+  <tr>
+    <th>Name</th><th>Surname</th><th>Age</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>John</td><td>Smith</td><td>10</td>
+  </tr>
+  <tr>
+    <td>Pete</td><td>Brown</td><td>15</td>
+  </tr>
+  <tr>
+    <td>Ann</td><td>Lee</td><td>5</td>
+  </tr>
+  <tr>
+    <td>...</td><td>...</td><td>...</td>
+  </tr>
+</tbody>
+</table>
+<input type="button" onclick="sortTable();" value="Sort"><br>
+<script>
+setPrintID("logSortTable");
+
+function sortTable(){
+	let sortedRows = Array.from(table.tBodies[0].rows) // 1
+	  .sort((rowA, rowB) => rowA.cells[0].innerHTML.localeCompare(rowB.cells[0].innerHTML));
+
+	table.tBodies[0].append(...sortedRows); // (3)
+}
+</script>
+
+The step-by-step algorthm:
+
+<ol>
+<li>Get all &lt;tr>, from &lt;tbody>.</li>
+<li>Then sort them comparing by the content of the first &lt;td> (the name field).</li>
+<li>Now insert nodes in the right order by .append(...sortedRows).</li>
+</ol>
+We don't have to remove row elements, just "re-insert", they leave the old place automatically.<br>
+<br>
+P.S. In our case, there's an explicit &lt;tbody> in the table, but even if HTML table doesn't have &lt;tbody>, the DOM structure always has it.
+
+<h3>.innerHTML vs .append vs .textContent</h3>
+문자열 "&lt;b>text&lt;/b>"을 입력했을 때의 처리: 
+<ul>
+<li id="elem1"></li>
+<li id="elem2"></li>
+<li id="elem3"></li>
+</ul>
+<script>
+let text = '<b>text</b>';
+
+elem1.append(document.createTextNode(text));
+elem2.innerHTML = text;
+elem3.textContent = text;
+</script>
+결과: ".innerHTML = text"만이 HTML로 처리됨.
+
+<h3>insertAdjacentHTML/Text/Element</h3>
+For that we can use another, a versatile method:
+<pre>
+elem.insertAdjacentHTML(where, html)
+</pre>
+
+The first parameter is a code word, specifying where to insert relative to elem. Must be one of the following:
+<ul>
+<li>"beforebegin" – insert html immediately before elem,</li>
+<li>"afterbegin" – insert html into elem, at the beginning,</li>
+<li>"beforeend" – insert html into elem, at the end,</li>
+<li>"afterend" – insert html immediately after elem.</li>
+</ul>
+The second parameter is an HTML string, that is inserted “as HTML”.
+
+
+<div id="logIntertList"></div>
+<ul id="ul">
+  <li id="one">1</li>
+  <li id="two">4</li>
+  <li>5</li>
+</ul>
+<input type="button" onclick="intertList();" value="Insert">
+<script>
+setPrintID("logIntertList");
+
+function intertList(){
+	one.insertAdjacentHTML('afterend', '<li>2</li><li>3</li>');
+}
+</script>
+
+<h3>Task : Clear the element</h3>
+Node removal : To remove a node, there's a method node.remove().<br>
+<input type="button" onclick="clearE('elem')" value="Remove">
+<ol id="elem">
+  <li>Hello</li>
+  <li>World</li>
+</ol>
+
+<script>
+function clearE(str){
+	id = document.getElementById(str);
+	id.innerHTML = '';
+}
+//clear(document.getElementById("elem")); // clears the list
+</script>
+
+<h3>Task : Create a list</h3>
+We write an interface to create a list from user input.
+For every list item:
+<ol>
+<li>Ask a user about its content using prompt.</li>
+<li>Create the &lt;li> with it and add it to &lt;ul>.</li>
+<li>Continue until the user cancels the input (by pressing Esc or via an empty entry).</li>
+</ol>
+All elements should be created dynamically. If a user types HTML-tags, they should be treated like a text.<br>
+<div id="logCL"></div>
+<input type="button" onclick="createList();" value="Create List">
+<script>
+function createList(){
+	logCL.textContent = "";
+
+	let ul = document.createElement('ul');
+	logCL.append(ul);
+	
+	while(true){
+		let str = prompt("Input an element: ", "");
+		if(!str) break;
+		let li = document.createElement('li');
+		li.textContent = str;
+		ul.append(li);
+	}
+}
+</script>
+
+<h3>Task : Create a tree from the object</h3>
+Write a function createTree that creates a nested ul/li list from the nested object.
+For instance:
+<pre>let data = {
+  "Fish": {
+    "trout": {},
+    "salmon": {}
+  },
+
+  "Tree": {
+    "Huge": {
+      "sequoia": {},
+      "oak": {}
+    },
+    "Flowering": {
+      "apple tree": {},
+      "magnolia": {}
+    }
+  }
+};</pre>
+<div id="logTree"></div>
+<input type="button" onclick="createTree();" value="Create Tree">
+<script>
+setPrintID("logTree");
+
+let data = {
+  "Fish": {
+    "trout": {},
+    "salmon": {}
+  },
+
+  "Tree": {
+    "Huge": {
+      "sequoia": {},
+      "oak": {}
+    },
+    "Flowering": {
+      "apple tree": {},
+      "magnolia": {}
+    }
+  }
+};
+
+function createTree(){
+	let container = document.getElementById("logTree");
+	container.innerHTML = createTreeText(data);
+}
+
+print(JSON.stringify(data["Tree"]));
+print(JSON.stringify(data["Tree"]["Huge"]));
+print(JSON.stringify(data["Tree"]["Huge"]["sequoia"]));
+
+function createTreeText(obj){ //standalone recursive function
+	let li = '';
+	let ul;
+	for(let key in obj){
+		li += '<li>' + key + createTreeText(obj[key]) + '</li>';
+	}
+	if(li){ //if exists, i.e., there was any child keys in obj
+		ul = '<ul>' + li + '</ul>';
+	}
+	return ul || ''; //if exists
+}
+</script>
+
+
+<h3>Task : Create a calendar</h3>
+
+Write a function createCalendar(elem, year, month). 
+
+<div id="logCal"></div>
+
+<script>
+setPrintID("logCal");
+
+function createCalendar(cal, year, month){
+	container = document.getElementById(cal);
+	
+	let theMonth = month - 1;
+	
+	let lengthMonth = new Date(year, theMonth + 1, 0).getDate();
+	let startDay = new Date(year, theMonth).getDay(); // the first day of month
+	//let startDay = new Date(year, theMonth, 1).getDay();
+	
+	let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+	let arrDay = [];
+	
+	for(let i=0;i<startDay;i++){
+		arrDay.push('');
+	}
+	for(let i=0;i<lengthMonth;i++){
+		arrDay.push(i+1);
+	}
+
+	let output = "<table><tr>"
+	for(let i=0;i<days.length;i++){
+		output += "<th>"+days[i]+"</th>";
+	}
+	output += "</tr><tr>";
+	for(let i=0;i<arrDay.length;i++){
+		output += "<td>"+arrDay[i]+"</td>";
+		if(i%7===6) output+="</tr><tr>"
+	}
+	let remainedLength = 7-arrDay.length%7;
+	for(let i=0;i<remainedLength;i++){
+		output += "<td> </td>";
+	}
+	output += "</tr></table>";
+
+	print(output);
+}
+
+createCalendar("logCal", 2012, 9);
+</script>
+
+<h3>Task : Clock with setInterval</h3>
+<div id="logClock"></div>
+<input type="button" onclick="clockStart();" value="Start">
+<input type="button" onclick="clockStop();" value="Stop">
+<script>
+setPrintID("logClock");
+
+function updateClock(){
+	now = new Date(); //current time
+	hr = now.getHours();
+	min = now.getMinutes();
+	sec = now.getSeconds();
+	
+	if(hr<10) hr = '0'+hr;
+	if(min<10) min = '0'+min;
+	if(sec<10) sec = '0'+sec;
+
+	let strClock = hr+':'+min+':'+sec;
+	logClock.innerHTML = strClock;
+}
+
+//setInterval(updateClock, 1000);
+
+let timerId;
+
+function clockStart(){
+	if(!timerId){ 
+	//Only set a new interval if the clock is not running. 
+	//Otherways, clicking the start button several times would set multiple concurrent intervals.
+		timerId = setInterval(updateClock, 1000);
+	}
+	updateClock();
+}
+
+function clockStop(){
+	clearInterval(timerId);
+	timerId = null;
+}
+
+</script>
+
+
+</body>
+</html>

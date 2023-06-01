@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<form id="form1">
+	<input type="number" id="num1">
+	<input type="number" id="num2">
+	<button type="button" onclick='mycalc.read();mycalc.sum();'>sum</button>
+	<button type="button" onclick='mycalc.read();mycalc.mul();'>multiply</button>
+	<button type="button" onclick='resetForm(this.parentNode.id);'>reset</button>
+	<input name="form1log" id="form1log" value="result">
+</form>
+<div id="log"></div>
+<script>
+function resetForm(obj){
+	document.getElementById(obj).reset();
+}
+function printLog(id, str){
+	let elmId = document.getElementById(id);
+	if(elmId.tagName == "DIV")
+		elmId.innerHTML += `${str}<br>`;
+	else
+		elmId.value = str;
+}
+
+//생성자 함수를 작성할 때는 관례적으로 함수 이름의 첫 글자를 '대문자'로 시작한다.
+//즉, 모든 함수는 생성자 함수가 될 수 있다..;;
+
+function User(name){
+	this.name = name;
+	this.isAdmin = false;
+}
+
+let user1 = new User('Jimmy');
+
+printLog("log", user1.name);
+printLog("log", user1.isAdmin);
+
+function Calculator(){
+	this.read = function(){
+		this.a = +document.getElementById("num1").value;
+		this.b = +document.getElementById("num2").value;
+	}
+	
+	this.sum = function(){
+		printLog("form1log", this.a + this.b);
+	}
+	
+	this.mul = function(){
+		printLog("form1log", this.a * this.b);
+	}
+}
+
+let mycalc = new Calculator();
+
+</script>
+</body>
+</html>

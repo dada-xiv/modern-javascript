@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+table{border-collapse: collapse;}
+td{border: 1px solid black;}
+</style>
+</head>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+/*
+The topmost tree nodes are available directly as document properties:
+
+<html> = document.documentElement
+<body> = document.body
+<head> = document.head
+*/
+
+/*
+elem.childNodes[0] === elem.firstChild
+elem.childNodes[elem.childNodes.length - 1] === elem.lastChild
+*/
+
+/*
+Task 1. Select all diagonal cells
+*/
+elmId = document.getElementById("log");
+let strT = '';
+strT += '<table>';
+for(let i=0;i<5;i++){
+	strT += '<tr>';
+		for(let j=0;j<5;j++){
+			strT+='<td>';
+			strT+=`${i},${j}`;			
+			strT+='</td>';
+		}
+	strT += '</tr>';
+}
+strT += '</table>';
+elmId.innerHTML+=strT;
+
+//setTimeout(500);
+
+//let table = document.querySelector('body > table');
+//let table = document.body.firstElementChild;
+let table = document.getElementsByTagName("table")[0];
+
+for(let i=0;i < table.rows.length;i++){
+	let row = table.rows[i];
+	row.cells[i].style.backgroundColor='gray';
+}
+
+
+</script>
+</body>
+</html>

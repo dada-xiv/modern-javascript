@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<div id="log3"></div>
+<div id="log2" style="background-color:#ccc;"></div>
+<div id="log"></div>
+<script>
+let printID = "log";
+function print(arg1, arg2){
+	let elmId = '';
+	let str = '';
+	if(arguments.length > 1){
+		elmId = document.getElementById(arg1);
+		str = arg2;
+	}else{
+		elmId = document.getElementById(printID);
+		str = arg1;
+	}
+	elmId.tagName === "INPUT" ? elmId.value=str : elmId.innerHTML+=`${str}<br>`;
+}
+function setPrintID(str){
+	printID = str;
+}
+
+let now = new Date();
+print(now);
+
+/*
+new Date(milliseconds)
+0 means 01.01.1970 UTC+0
+Dates before 01.01.1970 have negative timestamps, e.g.:
+*/
+
+let Jan01_1970 = new Date(0);
+print(Jan01_1970);
+
+// 31 Dec 1969
+let Dec31_1969 = new Date(-24 * 3600 * 1000);
+print(Dec31_1969);
+
+
+/*
+new Date(year, month, date, hours, minutes, seconds, ms) create the date with the given components in the local time zone. Only the first two arguments are obligatory.
+
+The year should have 4 digits. 
+The month count starts with 0 (Jan), up to 11 (Dec).
+The date parameter is actually the day of month, if absent then 1 is assumed.
+
+If hours/minutes/seconds/ms is absent, they are assumed to be equal 0.
+*/
+
+let date = new Date("2017-01-26");
+print(date);
+
+/*
+Access date components:
+
+getFullYear() gets the year (4 digits).
+getMonth() gets the month, from 0 to 11.
+getDate() gets the day of month, from 1 to 31.
+getHours(), getMinutes(), getSeconds(), getMilliseconds() get the corresponding time components.
+
+getDay() get the day of week, from 0 (Sunday) to 6 (Saturday). The first day is always Sunday, in some countries that's not so, but can't be changed.
+
+*/
+print("Hour : " + now.getHours());
+print("UTC Hour : " + now.getUTCHours());
+
+/*
+getTime() returns the timestamp for the date – a number of milliseconds passed from the January 1st of 1970 UTC+0.
+
+getTimezoneOffset() returns the difference between UTC and the local time zone, in minutes:
+*/
+let offset = new Date().getTimezoneOffset();
+print(offset); //-540
+print(offset/60); //-9
+
+/*
+Setting date components
+
+setFullYear(year, [month], [date])
+setMonth(month, [date])
+setDate(date)
+setHours(hour, [min], [sec], [ms])
+setMinutes(min, [sec], [ms])
+setSeconds(sec, [ms])
+setMilliseconds(ms)
+setTime(milliseconds) sets the whole date by milliseconds since 01.01.1970 UTC.
+*/
+
+date = new Date();
+print(date); //now
+print(+date); //miliseconds
+
+/*
+Task : Get a weekday
+*/
+function getWeekDay(date){
+	let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];	
+	return days[date.getDay()];
+}
+
+let dateString = "2012-01-03";
+date = new Date(dateString); //2012-01-03
+print(dateString + " is " + getWeekDay(date));
+
+
+/*
+Task : Last day of month?
+*/
+
+function getLastDayOfMonth(year, month){
+	let date = new Date(year, month, 0); //(month-1)+1 = the next month
+	//0 means 'one day before 1st day of the month', in other words, 'the last day of the previous month'
+	return date.getDate(); //gets the day from 1 to 31
+}
+
+print(getLastDayOfMonth(2012, 2)); //29
+
+/*
+How many seconds have passed today?
+*/
+
+function getSecondsPassedToday(date){
+	let start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+	let diff = date - start; //miliseconds difference
+	return Math.round(diff/1000); //make seconds
+}
+
+print(getSecondsPassedToday(new Date()) + 's have passed for today.');
+</script>
+</body>
+</html>

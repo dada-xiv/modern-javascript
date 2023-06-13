@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Canvas Example</title>
+<style>
+#canvas{cursor: pointer;}
+</style>
+</head>
+<body>
+<canvas id='canvas' width='600' height='300'></canvas>
+<script>
+let canvas = document.getElementById('canvas');
+let context = canvas.getContext('2d');
+
+// Set the line dash pattern
+context.setLineDash([5, 3]); // [dashLength, gapLength]
+
+// Draw a dashed line
+context.beginPath();
+context.moveTo(50, 50);
+context.lineTo(250, 50);
+context.stroke();
+</script>
+</body>
+</html>

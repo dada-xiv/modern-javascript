@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>requestAnimationFrame()</title>
+<style>
+#canvas{
+background: #ffffff;
+cursor: pointer;
+border:1px dashed #ccc;}
+#controls{
+margin-bottom:10px;}
+</style>
+</head>
+<body>
+<div id='controls'>
+<input id='animateButton' type='button' value='Animate'/>
+</div>
+<canvas id='canvas' width='500' height='500'></canvas>
+<script>
+let canvas = document.getElementById('canvas');
+let context = canvas.getContext('2d');
+let paused = true;
+let discs = [
+		{
+			x: 270,
+			y: 200,
+			lastX: 250,
+			lastY: 250,
+			velocityX: -2.2,
+			velocityY: 2.5,
+			radius: 25,
+			innerColor: 'rgba(150,150,150,.7)',
+			middleColor: 'rgba(175,175,175,0.7)',
+			outerColor: 'rgba(200,200,200,0.5)',
+			strokeStyle: 'gray',
+		},
+
+		{
+			x: 300,
+			y: 170,
+			lastX: 250,
+			lastY: 250,
+			velocityX: 1.2,
+			velocityY: -1.75,
+			radius: 25,
+			innerColor: 'rgba(150,150,150,.7)',
+			middleColor: 'rgba(175,175,175,0.7)',
+			outerColor: 'rgba(200,200,200,0.5)',
+			strokeStyle: 'gray',
+		},
+
+		{
+			x: 250,
+			y: 250,
+			lastX: 250,
+			lastY: 250,
+			velocityX: -3.2,
+			velocityY: -2.15,
+			radius: 25,
+			innerColor: 'rgba(150,150,150,.7)',
+			middleColor: 'rgba(175,175,175,0.7)',
+			outerColor: 'rgba(200,200,200,0.5)',
+			strokeStyle: 'gray',
+		},
+		
+		{
+			x: 150,
+			y: 250,
+			lastX: 150,
+			lastY: 250,
+			velocityX: -3.2,
+			velocityY: 3.5,
+			radius: 25,
+			innerColor: 'rgba(150,150,150,.7)',
+			middleColor: 'rgba(175,175,175,0.7)',
+			outerColor: 'rgba(200,200,200,0.5)',
+			strokeStyle: 'gray',
+		},
+
+		{ 
+			x: 50,
+			y: 150,
+			lastX: 50,
+			lastY: 150,
+			velocityX: 2.2,
+			velocityY: 2.5,
+			radius: 25,
+			innerColor: 'rgba(150,150,150,.7)',
+			middleColor: 'rgba(175,175,175,0.7)',
+			outerColor: 'rgba(200,200,200,0.5)',
+			strokeStyle: 'gray'
+		},
+
+		{ 
+			x: 150,
+			y: 75,
+			lastX: 150,
+			lastY: 75,
+			velocityX: 1.2,
+			velocityY: 1.5,
+			radius: 25,
+			innerColor: 'rgba(150,150,150,.7)',
+			middleColor: 'rgba(175,175,175,0.7)',
+			outerColor: 'rgba(200,200,200,0.5)',
+			strokeStyle: 'gray'
+		},
+	];
+let numDiscs = discs.length;
+let animateButton = document.getElementById('animateButton');
+
+function drawBackground() {
+	// draw some background here
+}
+
+function update() {
+	let disc = null;
+
+	for(let i=0; i < numDiscs; ++i) {
+		disc = discs[i];
+
+		if (disc.x + disc.velocityX + disc.radius > context.canvas.width || 
+				disc.x + disc.velocityX - disc.radius < 0) 
+			disc.velocityX = -disc.velocityX;
+
+		if (disc.y + disc.velocityY + disc.radius > context.canvas.height ||
+				disc.y + disc.velocityY - disc.radius  < 0) 
+			disc.velocityY= -disc.velocityY;
+
+		disc.x += disc.velocityX;
+		disc.y += disc.velocityY;
+	}
+}
+
+function draw() {
+	for(let i=0; i < numDiscs; ++i) {
+		disc = discs[i];
+
+		gradient = context.createRadialGradient(disc.x, disc.y, 0, disc.x, disc.y, disc.radius);
+
+		gradient.addColorStop(0.3, disc.innerColor);
+		gradient.addColorStop(0.5, disc.middleColor);
+		gradient.addColorStop(1.0, disc.outerColor);
+
+		context.save();
+		context.beginPath();
+		context.arc(disc.x, disc.y, disc.radius, 0, Math.PI*2, false);
+		context.fillStyle = gradient;
+		context.strokeStyle = disc.strokeStyle;
+		context.fill();
+		context.stroke();
+		context.restore();
+	}
+}
+
+// Animation
+function animate(time) {
+	if (!paused) {
+		context.clearRect(0,0,canvas.width,canvas.height);
+		drawBackground();
+		update();
+		draw();
+
+		window.requestAnimationFrame(animate);
+	}
+}
+   
+// Initialization
+animateButton.onclick = function () {
+	paused = paused ? false : true;
+	if (paused){
+		animateButton.value = 'Animate';
+	}else{
+		window.requestAnimationFrame(animate);
+		animateButton.value = 'Pause';
+	}
+};
+</script>
+</body>
+</html>

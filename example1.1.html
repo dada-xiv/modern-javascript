@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Canvas Example</title>
+<style>
+</style>
+</head>
+<body>
+<canvas id='canvas' width='600' height='300'></canvas>
+<script>
+// must be declared after the canvas element
+let canvas = document.getElementById('canvas');
+context = canvas.getContext('2d');
+
+context.font = '30pt sans';
+context.fillStyle = '#c0c0c0';
+context.strokeStyle = '#505050'
+
+// Calculate the coordinates to center the text
+let textX = canvas.width / 2 - 150;
+let textY = canvas.height / 2 + 15;
+
+context.fillText('Hello Canvas!!', textX, textY);
+context.strokeText('Hello Canvas!!', textX, textY);
+</script>
+</body>
+</html>

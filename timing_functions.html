@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+.brick {
+  width: 40px;
+  height: 20px;
+  background: #EE6B47;
+  position: relative;
+  cursor: pointer;
+}
+
+.path {
+  outline: 1px solid #E8C48E;
+  width: 540px;
+  height: 20px;
+}
+
+#img01{position:relative;}
+</style>
+</head>
+<body>
+
+<script>
+function animate(options) {
+  let start = performance.now();
+
+  requestAnimationFrame(function animate(time) {
+    // timeFraction goes from 0 to 1
+    let timeFraction = (time - start) / options.duration;
+    if (timeFraction > 1) timeFraction = 1;
+
+    // calculate the current animation state
+    let progress = options.timing(timeFraction)
+    
+    options.draw(progress); //drawing
+
+    if (timeFraction < 1) {
+      requestAnimationFrame(animate);
+    }
+  });
+}
+
+</script>
+
+<h1>Timing functions</h1>
+
+f(t) = t^2<br>
+<div class="path"><div class="brick" id="brick01"></div></div>
+<script>
+function resetBrickPositions() {
+	let arrBricks = document.querySelectorAll('body [id^="brick"]');
+	let totalBricks = arrBricks.length;
+	
+	for(let i = 1; i <= totalBricks; i++) {
+		let brick = document.getElementById('brick' + ('0' + i).slice(-2));
+		brick.style.left = '0';
+	}
+}
+	
+brick01.onclick = function() {
+	animate({
+		//options for this animation
+		duration: 1000,
+		timing: function(timeFraction) {
+			return Math.pow(timeFraction, 2);
+		},
+		draw: function(progress) {
+			brick01.style.left = progress * 500 + 'px';
+		}
+	});
+};
+</script>
+
+f(t) = 1 - \sqrt{1-t^2} or f(t) = 1 - sin(arccos(t))<br>
+<div class="path"><div class="brick" id="brick02"></div></div>
+<script>
+brick02.onclick = function() {
+	animate({
+		//options for this animation
+		duration: 1000,
+		timing: function circ(timeFraction) {
+			return 1 - Math.sin(Math.acos(timeFraction));
+		},
+		draw: function(progress) {
+			brick02.style.left = progress * 500 + 'px';
+		}
+	});
+};
+</script>
+
+f(t) = t^2 * ((a + 1) * t - a), here a = 1.5<br>
+<div class="path"><div class="brick" id="brick03"></div></div>
+<script>
+brick03.onclick = function() {
+	animate({
+		//options for this animation
+		duration: 1000,
+		timing: function circ(a, timeFraction) {
+			return Math.pow(timeFraction, 2) * ((a + 1) * timeFraction - a)
+		}.bind(null, 1.5),
+		draw: function(progress) {
+			brick03.style.left = progress * 500 + 'px';
+		}
+	});
+};
+</script>
+
+f(t) = bounce<br>
+<div class="path"><div class="brick" id="brick04"></div></div>
+<script>
+brick04.onclick = function() {
+	animate({
+		//options for this animation
+		duration: 1000,
+		timing: function bounce(timeFraction) {
+			//return :
+			for (let a = 0, b = 1; 1; a += b, b /= 2) {
+				if (timeFraction >= (7 - 4 * a) / 11) {
+					return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+				}
+			}
+		},
+		draw: function(progress) {
+			brick04.style.left = progress * 500 + 'px';
+		}
+	});
+};
+</script>
+
+f(t) = elastic<br>
+<div class="path"><div class="brick" id="brick05"></div></div>
+<script>
+brick05.onclick = function() {
+	animate({
+		//options for this animation
+		duration: 3000,
+        timing: function elastic(a, timeFraction) {
+			return Math.pow(2, 10 * (timeFraction - 1)) * Math.cos(20 * Math.PI * a / 3 * timeFraction)
+        }.bind(null, 1.5),
+		draw: function(progress) {
+			brick05.style.left = progress * 500 + 'px';
+		}
+	});
+};
+</script>
+
+f(t) = bounce ease out<br>
+<div class="path"><div class="brick" id="brick06"></div></div>
+<script>
+function makeEaseOut(timing) {
+	return function(timeFraction) {
+		return 1 - timing(1 - timeFraction);
+	}
+}
+
+function bounce(timeFraction) {
+	for (let a = 0, b = 1; 1; a += b, b /= 2) {
+		if (timeFraction >= (7 - 4 * a) / 11) {
+			return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+		}
+	}
+}
+
+brick06.onclick = function() {
+	animate({
+		//options for this animation
+		duration: 3000,
+        timing: makeEaseOut(bounce),
+		draw: function(progress) {
+			brick06.style.left = progress * 500 + 'px';
+		}
+	});
+};
+</script>
+
+
+<input type="button" value="reset" onclick="resetBrickPositions();"/><br>
+
+</body>
+</html>

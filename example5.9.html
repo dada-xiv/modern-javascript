@@ -24,7 +24,7 @@ let discs = [
 		{
 			x: 270,
 			y: 200,
-			lastX: 250,
+			lastX: 270,
 			lastY: 250,
 			velocityX: -2.2,
 			velocityY: 2.5,
@@ -38,8 +38,8 @@ let discs = [
 		{
 			x: 300,
 			y: 170,
-			lastX: 250,
-			lastY: 250,
+			lastX: 300,
+			lastY: 170,
 			velocityX: 1.2,
 			velocityY: -1.75,
 			radius: 25,
@@ -132,6 +132,8 @@ function update() {
 }
 
 function draw() {
+	let disc = null;
+	
 	for(let i=0; i < numDiscs; ++i) {
 		disc = discs[i];
 
@@ -156,21 +158,21 @@ function draw() {
 function animate(time) {
 	if (!paused) {
 		context.clearRect(0,0,canvas.width,canvas.height);
-		drawBackground();
+		//drawBackground();
 		update();
 		draw();
 
-		window.requestAnimationFrame(animate);
+		requestAnimationFrame(animate);
 	}
 }
-   
+
 // Initialization
 animateButton.onclick = function () {
 	paused = paused ? false : true;
 	if (paused){
 		animateButton.value = 'Animate';
 	}else{
-		window.requestAnimationFrame(animate);
+		requestAnimationFrame(animate);
 		animateButton.value = 'Pause';
 	}
 };

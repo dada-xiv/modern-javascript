@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Free fall</title>
+<style>
+canvas{border:1px dashed gray;}
+html{max-width:720px;}
+#aniButton{width:50px;}
+</style>
+</head>
+<body>
+<canvas id="canvas" width="400" height="400"></canvas><br>
+<!--button type="button" onclick="startSimulation();">start</button-->
+<input id="aniButton" type="button" value="pause" onclick="pauseSimulation();"/>
+<script>
+// Get the canvas element and its 2D rendering context
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const gravity = 0.1; // Gravitational acceleration
+
+// Initial position and velocity
+let positionX = canvas.width/2;
+let positionY = 100;
+let velocityX = 1.8; // Initial velocity along the X-axis
+let velocityY = -1; // Initial velocity along the Y-axis
+let animationId; // Store the animation frame ID
+
+// Function to update the position and velocity
+function update(){
+	let radius = 15; // Disk radius
+
+	// Clear the canvas
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	// Update the velocity and position
+	velocityY += gravity;
+	positionY += velocityY;
+	positionX += velocityX;
+
+	// Bouncing-Y
+	if(positionY > canvas.height-radius){
+		positionY = canvas.height-radius;
+		velocityY *= -1;
+	}
+		
+	// Bouncing-X
+	if(positionX > canvas.width-radius){
+		positionX = canvas.width-radius;
+		velocityX *= -1;
+	}
+	if(positionX < radius){
+		positionX = radius;
+		velocityX *= -1;
+	}
+
+	// Draw a disk at the current position
+	ctx.beginPath();
+	ctx.arc(positionX, positionY, radius, 0, Math.PI*2);
+	
+	let gradient = ctx.createRadialGradient(positionX, positionY, 0, positionX, positionY, radius);
+	gradient.addColorStop(0.0, '#999');
+	gradient.addColorStop(0.5, '#ccc');
+	gradient.addColorStop(1.0, '#eee');
+		
+	ctx.fillStyle = gradient;
+	ctx.strokeStyle = '#ccc';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();
+
+	// Request the next animation frame
+	animationId = requestAnimationFrame(update);
+}
+
+function startSimulation(){
+	// Stop the simulation if it's running
+	if(animationId){
+		pauseSimulation();
+	}
+	
+	// Reset the position and velocity
+	//positionY = 100;
+	//velocityY = 0;
+
+	// Start the simulation
+	update();
+}
+
+function pauseSimulation(){
+	if(animationId){
+		aniButton.value = "start";
+		cancelAnimationFrame(animationId);
+		animationId = null;
+	}else{
+		update();
+		aniButton.value = "pause";
+	}
+}
+
+// Start the animation loop
+update();
+</script>
+</body>
+</html>

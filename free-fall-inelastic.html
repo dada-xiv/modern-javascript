@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Physics Simulation</title>
+<style>
+canvas {
+  border: 1px solid #000;
+}
+
+html{
+max-width:720px;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas" width="400" height="400"></canvas>
+<script>
+// Get the canvas element and its 2D rendering context
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+// Set up the initial position and velocity
+let positionY = 100;   // Initial position along the Y-axis
+let velocityY = 10;     // Initial velocity along the Y-axis
+const gravity = 0.5;   // Acceleration due to gravity
+const restitution = 0.8; // Coefficient of restitution (bounciness)
+let animationId; // Store the animation frame ID
+
+// Function to update the position and velocity
+function update() {
+	let radius = 20;
+	// Clear the canvas
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	// Update the velocity and position
+	velocityY += gravity;
+	positionY += velocityY;
+
+	// Simulate bouncing
+	if (positionY > canvas.height-radius) {
+		positionY = canvas.height-radius;
+		velocityY *= -restitution;
+	}
+
+	// Draw a circle at the current position
+	ctx.beginPath();
+	ctx.arc(canvas.width / 2, positionY, radius, 0, Math.PI * 2);
+	ctx.fillStyle = "#FF0000";
+	ctx.fill();
+	ctx.closePath();
+
+	// Request the next animation frame
+	animationId = requestAnimationFrame(update);
+}
+
+// Function to start the simulation
+function startSimulation() {
+	// Stop the simulation if it's running
+	if (animationId) {
+		pauseSimulation();
+	}
+	// Reset the position and velocity
+	positionY = 100;
+	velocityY = 0;
+
+	// Start the simulation
+	update();
+	  
+	// Prevent starting a new animation if it's already running
+	/*if (!animationId) {
+		update();
+	}*/
+}
+
+// Function to stop the simulation
+function pauseSimulation() {
+	if (animationId) {
+		cancelAnimationFrame(animationId);
+		animationId = null;
+	}else{
+		update();
+	}
+	
+}
+// Start the animation loop
+//update();
+</script>
+<br>
+<button type="button" onclick="startSimulation();">start</button>
+<button type="button" onclick="pauseSimulation();">pause</button>
+<br>
+In this example, the canvas element is used to draw a circle representing the object in the simulation. The update function is called repeatedly using requestAnimationFrame to animate the simulation. Inside the update function, the position and velocity are updated based on the laws of physics.
+
+The positionY variable represents the vertical position of the object, while the velocityY variable represents the vertical velocity. The gravity variable determines the acceleration due to gravity, and the restitution variable controls the bounciness of the object.
+
+Whenever the object reaches the bottom of the canvas (positionY > canvas.height), it bounces back up by reversing the velocity and reducing it by the restitution factor.
+
+Feel free to modify the code according to your requirements and experiment with different parameters to achieve the desired behavior.
+</body>
+</html>
